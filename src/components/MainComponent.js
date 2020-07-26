@@ -1,9 +1,16 @@
 import React, { Component} from 'react';
 import Header from './HeaderComponent';
-import Posts from '../shared/posts'
 import Home from './PostsComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import FullPost from './FullPostComponent';
+
+const mapStateToProps = state => {
+  return {
+    posts: state.posts,
+    comments: state.comments
+  }
+}
 
 class Main extends Component {
 
@@ -12,7 +19,9 @@ class Main extends Component {
 			const postWithId = ({match}) => {
 				console.log(match.params);
 				return(
-						<FullPost post={Posts.filter((post)=> post.id == match.params.postId)[0]}/>
+						<FullPost post={this.props.posts.filter((post)=> post.id == match.params.postId)[0]} 
+								  comments={this.props.comments.filter((comment) => comment.postId == match.params.postId)}
+						/>
 					);
 			}
 
@@ -21,9 +30,9 @@ class Main extends Component {
 			<>
 				<Header/>
 				<Switch>
-				<Route exact path="/" component={() => <Home posts={Posts}/>}/>
+				<Route exact path="/" component={() => <Home posts={this.props.posts} />}/>
 				<Route path="/home/:postId" component={postWithId} />
-
+				<Redirect to="/" />
 				
 				</Switch>
 			</>
@@ -31,4 +40,4 @@ class Main extends Component {
 	}
 }
 
-export default Main;
+export default withRouter(connect(mapStateToProps)(Main));
