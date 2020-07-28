@@ -15,6 +15,9 @@ export const NewPost = (state ={
 		case ActionTypes.NEWPOST_SUC :
 			return {...state, isLoading:false, errMess:null, redirect:true}
 
+		case ActionTypes.SWITCH_REDIRECT :
+			return {...state, redirect : false}
+
 		default : 
 			return state
 	}

@@ -88,11 +88,11 @@ export const addPosts = (posts) => {
   };
 };
 
-export const addNewPost = (data) =>(dispatch) => {
-
-	dispatch(newPostLoading);
+export const addNewPost = (data) => {
 
 	return (dispatch) => {
+    dispatch(newPostLoading);
+
     axios
       .post('/posts.json', data)
       .then((response) => {
@@ -103,8 +103,17 @@ export const addNewPost = (data) =>(dispatch) => {
         console.log(err);
         dispatch(newPostFailed(err));
       });
+    setTimeout(() => {
+        dispatch(switchRedirect());
+    }, 2000);
   };
 };
+
+export const switchRedirect = () => {
+  return {
+    type : ActionTypes.SWITCH_REDIRECT
+  }
+}
 
 export const newPostLoading = () => {
 	return{

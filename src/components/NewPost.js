@@ -17,14 +17,14 @@ class NewPost extends Component {
       image:''
     }
 
-    axios
+    /*axios
       .post('/posts.json', data)
       .then((response) => {
         console.log(response.data);
       })
       .catch((err) => {
         console.log(err);
-      });
+      });*/
 
     this.props.addNewPost(data);
   };

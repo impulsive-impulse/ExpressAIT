@@ -85,7 +85,8 @@ class CommentForm extends Component {
 
 
 function RenderComments (comments, postId){
-	console.log(comments);
+	
+
 	if(comments!=null)
 	{
 		return(
