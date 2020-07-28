@@ -2,14 +2,56 @@ import * as ActionTypes from './ActionTypes';
 //import POSTS from '../shared/posts';
 import axios from '../axios-posts.js';
 
-export const addComment = (postId, rating, author, comment) => ({
-    type: ActionTypes.ADD_COMMENT,
-    payload: {
-        postId: postId,
-        rating: rating,
-        author: author,
-        comment: comment
+export const addComment = (data) => {
+    var comment=data;
+    comment.date = new Date().toISOString();
+    return (dispatch) => {
+      axios
+        .post('/comments.json',comment)
+        .then((res) => {
+          dispatch(addCommentSucc());
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }   
+};
+
+export const addCommentSucc =() => ({
+    type: ActionTypes.ADD_COMMENT_SUCC
+});
+
+export const fetchComments =() => (dispatch) => {
+    dispatch(commentsLoading());
+    axios
+      .get('/comments.json')
+      .then((res) => {
+          dispatch(loadComments(res.data));
+      })
+      .catch((err) => {
+          dispatch(commentsFailed());
+      })
+};
+
+export const commentsLoading=() =>({
+    type : ActionTypes.IS_LOADING
+});
+
+export const loadComments= (comments) =>{
+    let commentsArray = [];
+    for(let key in comments){
+      commentsArray.push({...comments[key], id : key });
     }
+    
+    return {
+      type : ActionTypes.LOAD_COMMENTS,
+      payload : commentsArray
+    };
+};
+
+export const commentsFailed =(errMess) =>({
+    type : ActionTypes.COMMENTS_FAILED,
+    payload: errMess
 });
 
 export const fetchPosts = () => (dispatch) => {

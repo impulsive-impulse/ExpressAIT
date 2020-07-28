@@ -8,3 +8,8 @@ export const ADD_NEWPOST = "ADD_NEWPOST";
 export const NEWPOST_LOADING ="NEWPOST_LOADING";
 export const NEWPOST_FAILED = "NEWPOST_FAILED";
 export const NEWPOST_SUC ="NEWPOST_SUC";
+
+export const ADD_COMMENT_SUCC = "ADD_COMMENT_SUCC";
+export const LOAD_COMMENTS ="LOAD_COMMENTS";
+export const COMMENTS_FAILED = "COMMENTS_FAILED";
+export const IS_LOADING = "IS_LOADING";

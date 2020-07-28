@@ -1,4 +1,3 @@
-import POSTS from '../shared/posts';
 import * as ActionTypes from './ActionTypes';
 
 export const Posts = (state = { 

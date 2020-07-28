@@ -1,37 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem, Label,
+import { Breadcrumb, BreadcrumbItem, Label,
     Modal, ModalHeader, ModalBody, Button, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
-import { Loading } from './LoadingComponent';
-
-function RenderComments(comments,addComment,postId){
-	 if (comments !== null && Array.isArray(comments.comments))
-            return(
-                <div className="col-12 col-md-5 m-1">
-                    <h4>Comments</h4>
-                    <ul className="list-unstyled">
-                            {comments.comments.map((comment) => {
-                                return (
-                                    <div key={comment.id}>
-                                        <li>
-                                        <p><strong>{comment.comment}</strong></p>
-                                        <p><strong>{comment.rating} stars </strong></p>
-                                        <p>-- {comment.author} , {comment.date}</p>
-                                        </li>
-                                    </div>
-                                );
-                            })}
-                    </ul>
-                    <CommentForm postId={postId} addComment={addComment} />
-                </div>
-            );
-        
-        return(
-            <div></div>
-        );
-}
 
 class CommentForm extends Component {
 
@@ -55,10 +26,18 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.postId, values.rating, values.author, values.comment);
+        const data ={
+        	postId :this.props.postId,
+        	author :values.author,
+        	rating : values.rating,
+        	comment : values.comment
+        }
+        
+        this.props.addComment(data);
     }
 
     render() {
+
         return(
         <div>
             <Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit Comment</Button>
@@ -104,7 +83,37 @@ class CommentForm extends Component {
 
 }
 
+
+function RenderComments (comments, postId){
+	console.log(comments);
+	if(comments!=null)
+	{
+		return(
+			<>
+				<div className="col-12 col-md-5 m-1">
+                    <h4>Comments</h4>
+                    <ul className="list-unstyled">
+                        {comments.comments.map((comment) => {
+                            return (
+                                <div key={comment._id}>
+                                    <li>
+                                    <p><strong>{comment.comment}</strong><br/>
+                                    <strong>{comment.rating} stars</strong></p>
+                                    <p>-- {comment.author}, {comment.date}</p>
+                                    </li>
+                                </div>
+                            );
+                        })}
+                    </ul>
+                </div>
+			</>
+		)
+	}
+	return null;	
+}
+
 function FullPost (props){
+
 		return(
 				<>
 					<div className="container">
@@ -116,7 +125,7 @@ function FullPost (props){
                             <hr />
                         </div>
 						<div className="row">
-							<img src={(props.post.image)} height="100" width="100" />
+							<img src={(props.post.image)} height="100" width="100" alt={props.post.title} />
 						</div>
 						<div className="row">
 							<h3><strong>{props.post.title}</strong></h3>
@@ -127,10 +136,11 @@ function FullPost (props){
 						<div className="row">
 							<p>{props.post.content}</p>
 						</div>
-						<div className="row ">
-							<RenderComments comments={props.comments}
-								addComment={props.addComment}
-								postId={props.postId} />
+						<div className="row">
+							<RenderComments comments={props.comments} postId={props.postId} />
+						</div>
+						<div className="row row-content">
+							<CommentForm addComment={props.addComment} postId={props.postId}/>
 						</div>
 					</div>
 				</>

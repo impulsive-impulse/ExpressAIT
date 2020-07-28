@@ -4,7 +4,7 @@ import Blogs from './PostsComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import FullPost from './FullPostComponent';
-import { addComment, fetchPosts } from '../redux/ActionCreators';
+import { addComment, fetchPosts , fetchComments} from '../redux/ActionCreators';
 import NewPost from './NewPost'; 
 
 const mapStateToProps = state => {
@@ -16,8 +16,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
 
-addComment: (postId, rating, author, comment) => dispatch(addComment(postId, rating, author, comment)),
-fetchPosts: () => {dispatch(fetchPosts())}
+addComment: (data) => dispatch(addComment(data)),
+fetchPosts: () => {dispatch(fetchPosts())},
+fetchComments: () => dispatch(fetchComments())
 
 });
 
@@ -25,15 +26,15 @@ class Main extends Component {
 
 	componentDidMount(){
 		this.props.fetchPosts();
+		this.props.fetchComments();
 	}
 
 	render(){
 		const postWithId = ({match}) => {
-			console.log(match.params);
 			return(
 					<FullPost post={this.props.posts.posts.filter((post)=> post.id === match.params.postId)[0]} 
-					  comments={this.props.comments.filter((comment) => comment.postId == match.params.postId)}
 					  addComment={this.props.addComment}
+					  comments={this.props.comments.comments.filter((comment) => comment.postId === match.params.postId)}
 					  postId={match.params.postId}
 					/>
 				);
