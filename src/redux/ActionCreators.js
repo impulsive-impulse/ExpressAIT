@@ -139,10 +139,12 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = (authData) => {
+export const authSuccess = (token, userId, displayName) => {
     return {
         type: ActionTypes.AUTH_SUCCESS,
-        authData: authData
+        idToken: token,
+        userId: userId,
+        displayName: displayName
     };
 };
 
@@ -150,6 +152,20 @@ export const authFail = (error) => {
     return {
         type: ActionTypes.AUTH_FAIL,
         error: error
+    };
+};
+
+export const logout = () => {
+  return{
+      type: ActionTypes.AUTH_LOGOUT
+  };
+};
+
+export const checkAuthTimeout = (expirationTime) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logout());
+        }, expirationTime * 1000);
     };
 };
 
@@ -167,7 +183,8 @@ export const authSignUp = (email, password , firstName , lastName) => {
     .post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBiLEXehz6KH485lUUFi2gn30NwQn2PiPs',authData)
     .then(response => {
         console.log(response);
-        dispatch(authSuccess(response.data));
+        dispatch(authSuccess(response.data.idToken, response.data.localId, response.data.displayName));
+        dispatch(checkAuthTimeout(response.data.expiresIn));
     })
     .catch(err => {
       console.log(err);
@@ -189,7 +206,8 @@ export const authSignIn = (email ,password) => {
     .post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBiLEXehz6KH485lUUFi2gn30NwQn2PiPs',authData)
     .then(response => {
       console.log(response);
-      dispatch(authSuccess(response.data));
+      dispatch(authSuccess(response.data.idToken, response.data.localId, response.data.displayName));
+      dispatch(checkAuthTimeout(response.data.expiresIn));
     })
     .catch(err =>{
       console.log(err);

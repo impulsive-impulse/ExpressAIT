@@ -2,6 +2,7 @@ import {createStore, combineReducers,applyMiddleware, compose} from 'redux';
 import {Posts} from './posts';
 import {Comments} from './comments';
 import {NewPost} from './newPost';
+import Auth from './auth';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -13,7 +14,8 @@ export const ConfigureStore = () => {
         combineReducers({
         	posts:Posts,
         	comments: Comments,
-        	newPost: NewPost
+        	newPost: NewPost,
+        	auth: Auth
         }),
        composeEnhancers(applyMiddleware(thunk,logger))
     );
