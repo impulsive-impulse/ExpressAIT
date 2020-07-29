@@ -14,3 +14,10 @@ export const ADD_COMMENT_SUCC = "ADD_COMMENT_SUCC";
 export const LOAD_COMMENTS ="LOAD_COMMENTS";
 export const COMMENTS_FAILED = "COMMENTS_FAILED";
 export const IS_LOADING = "IS_LOADING";
+
+export const AUTH_START = 'AUTH_START';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+
+export const SET_AUTH_REDIRECT_PATH = 'SET_AUTH_REDIRECT_PATH';

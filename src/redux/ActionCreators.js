@@ -1,6 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 //import POSTS from '../shared/posts';
 import axios from '../axios-posts.js';
+import axiosAuth from 'axios';
 
 export const addComment = (data) => {
     var comment=data;
@@ -103,9 +104,11 @@ export const addNewPost = (data) => {
         console.log(err);
         dispatch(newPostFailed(err));
       });
+    
     setTimeout(() => {
         dispatch(switchRedirect());
     }, 2000);
+
   };
 };
 
@@ -128,4 +131,69 @@ export const newPostFailed =(errMess) => ({
 
 export const newPostSuc =() => ({
 	type: ActionTypes.NEWPOST_SUC
-})
+});
+
+export const authStart = () => {
+    return {
+        type: ActionTypes.AUTH_START
+    };
+};
+
+export const authSuccess = (authData) => {
+    return {
+        type: ActionTypes.AUTH_SUCCESS,
+        authData: authData
+    };
+};
+
+export const authFail = (error) => {
+    return {
+        type: ActionTypes.AUTH_FAIL,
+        error: error
+    };
+};
+
+export const authSignUp = (email, password , firstName , lastName) => {
+  return dispatch => {
+    dispatch(authStart());
+    const authData = {
+      email : email,
+      password : password,
+      displayName: firstName+ " " + lastName,
+      returnSecureToken: true
+    };
+
+    axiosAuth
+    .post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBiLEXehz6KH485lUUFi2gn30NwQn2PiPs',authData)
+    .then(response => {
+        console.log(response);
+        dispatch(authSuccess(response.data));
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(authFail(err));
+    })
+  };
+};
+
+export const authSignIn = (email ,password) => {
+  return dispatch => {
+    dispatch(authStart());
+    const authData = {
+      email : email,
+      password : password,
+      returnSecureToken: true
+    };
+
+    axiosAuth
+    .post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBiLEXehz6KH485lUUFi2gn30NwQn2PiPs',authData)
+    .then(response => {
+      console.log(response);
+      dispatch(authSuccess(response.data));
+    })
+    .catch(err =>{
+      console.log(err);
+      dispatch(authFail(err));
+    })
+  };
+};

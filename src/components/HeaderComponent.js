@@ -1,8 +1,16 @@
 import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect, withRouter } from 'react-router-dom';
 import React,{Component} from 'react';
+import { connect } from 'react-redux';
 
+import { authSignUp, authSignIn } from '../redux/ActionCreators';
+
+
+const mapDispatchToProps = dispatch => ({
+    onAuthSignUp: ( email, password, firstName, lastName) => dispatch(authSignUp( email, password, firstName, lastName)),
+    onAuthSignIn: (email, password) => dispatch(authSignIn(email, password))
+});
 
 class Header extends Component {
     constructor(props) {
@@ -11,7 +19,8 @@ class Header extends Component {
         this.toggleNav = this.toggleNav.bind(this);
         this.state = {
           isNavOpen: false,
-          isModalOpen: false
+          isModalOpen: false,
+          isSignUp : true
         };
 
         this.toggleModal = this.toggleModal.bind(this);
@@ -32,10 +41,19 @@ class Header extends Component {
 
       handleLogin(event) {
         this.toggleModal();
-        alert("Username: " + this.username.value + " Password: " + this.password.value
-            + " Remember: " + this.remember.checked);
         event.preventDefault();
+        //alert("Username: " + this.username.value + " Password: " + this.password.value);
+        if(!this.state.isSignup)
+            this.props.onAuthSignUp( this.username.value, this.password.value, this.firstName.value, this.lastName.value);
+        else 
+            this.props.onAuthSignIn(this.username.value, this.password.value);
         }
+
+    switchAuthModeHandler = () => {
+        this.setState( prevState => {
+            return { isSignup: !prevState.isSignup };
+        } );
+    }
 
     render() {
         return(
@@ -59,16 +77,27 @@ class Header extends Component {
                         </Collapse>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <Button outline onClick={this.toggleModal}><span className="fa fa-sign-in fa-lg"></span> Login</Button>
+                                <Button outline onClick={this.toggleModal}><span className="fa fa-sign-in fa-lg"></span> Authenticate</Button>
                             </NavItem>
                         </Nav>
                     </div>
                 </Navbar>
 
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+                    <ModalHeader toggle={this.toggleModal}>{this.state.isSignup ? 'LogIn' : 'SignUp'}</ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
+
+                            {!this.state.isSignup?<FormGroup>
+                                <Label htmlFor="lastName">LastName</Label>
+                                <Input type="text" id="lastName" name="lastName"
+                                    innerRef={(input) => this.lastName = input} />
+                            </FormGroup> : null}
+                            {!this.state.isSignup?<FormGroup>
+                                <Label htmlFor="firstName">FirstName</Label>
+                                <Input type="text" id="firstName" name="firstName"
+                                    innerRef={(input) => this.firstName = input} />
+                            </FormGroup>:null}
                             <FormGroup>
                                 <Label htmlFor="username">Username</Label>
                                 <Input type="text" id="username" name="username"
@@ -79,14 +108,8 @@ class Header extends Component {
                                 <Input type="password" id="password" name="password"
                                     innerRef={(input) => this.password = input}  />
                             </FormGroup>
-                            <FormGroup check>
-                                <Label check>
-                                    <Input type="checkbox" name="remember"
-                                    innerRef={(input) => this.remember = input}  />
-                                    Remember me
-                                </Label>
-                            </FormGroup>
-                            <Button type="submit" value="submit" color="primary">Login</Button>
+                            <Button type="submit" value="submit" color="primary">{this.state.isSignup ? 'LogIn' : 'SignUp'}</Button>
+                            <Label onClick={this.switchAuthModeHandler}> <i><b><sub>Switch to {!this.state.isSignup ? 'LogIn' : 'SignUp'} ? </sub></b></i></Label>
                         </Form>
                     </ModalBody>
                 </Modal>
@@ -106,4 +129,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(connect(null, mapDispatchToProps)(Header));
