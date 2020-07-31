@@ -249,3 +249,76 @@ export const authCheckState = () => {
         }
     };
 };
+
+export const editPostGetData =(id) =>{
+  return dispatch => {
+    axios
+    .get('/posts/'+id+'.json')
+    .then((res) =>{
+        dispatch(editPostGetDataSuccess(res.data));
+    })
+    .catch((err) =>{
+        dispatch(editPostGetDataFail(err));
+    })
+  }
+};
+
+export const editPostGetDataSuccess = ( post ) =>{
+  return {
+    type: ActionTypes.EDIT_POST_GET_DATA_SUCCESS,
+    title: post.title,
+    author: post.author,
+    content: post.content,
+  }
+};
+
+export const editPostGetDataFail = (err) => {
+  return {
+    type: ActionTypes.EDIT_POST_GET_DATA_FAIL,
+    error : err
+  }
+};
+
+export const editPost = (title, author, content, id) => {
+    return dispatch => {
+      const data= {
+        title: title, 
+        author : author,
+        content: content,
+        image : null
+      }
+
+      axios
+      .put("/posts/" + id + ".json", data)
+      .then((res) =>{
+          console.log(res.data);
+          dispatch(updateEditPostState(title, author, content));
+        })
+      .catch((err)=> {
+        console.log(err);
+      })
+    };
+};
+
+export const updateEditPostState = (title, author, content ) => {
+  return{
+    type: ActionTypes.UPDATE_EDIT_POST_STATE,
+    title: title,
+    author: author,
+    content: content
+  }
+}
+
+export const updatePostTitle = (newTitle) => {
+  return {
+    type: ActionTypes.UPDATE_POST_TITLE,
+    newTitle: newTitle
+  };
+};
+
+export const updatePostContent = (newContent) => {
+  return {
+    type: ActionTypes.UPDATE_POST_CONTENT,
+    newContent: newContent
+  };
+};

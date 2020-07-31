@@ -5,7 +5,6 @@ import { Button, Row, Col, Label } from 'reactstrap';
 import { Control, LocalForm } from 'react-redux-form';
 import { addNewPost } from '../redux/ActionCreators';
 import {Loading} from './LoadingComponent';
-import axios from '../axios-posts';
 
 class NewPost extends Component {
   
@@ -16,15 +15,6 @@ class NewPost extends Component {
       content: event.content,
       image:''
     }
-
-    /*axios
-      .post('/posts.json', data)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });*/
 
     this.props.addNewPost(data);
   };

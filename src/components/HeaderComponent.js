@@ -55,6 +55,8 @@ class Header extends Component {
             this.props.onAuthSignUp( this.username.value, this.password.value, this.firstName.value, this.lastName.value);
         else 
             this.props.onAuthSignIn(this.username.value, this.password.value);
+
+        this.toggleModal();
     }
 
     switchAuthModeHandler = () => {
