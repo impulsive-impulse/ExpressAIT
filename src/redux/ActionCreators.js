@@ -197,7 +197,6 @@ export const authSignUp = (email, password , firstName , lastName) => {
         dispatch(checkAuthTimeout(response.data.expiresIn));
     })
     .catch(err => {
-      console.log(err);
       dispatch(authFail(err));
     })
   };
@@ -291,7 +290,6 @@ export const editPost = (title, author, content, id) => {
       axios
       .put("/posts/" + id + ".json", data)
       .then((res) =>{
-          console.log(res.data);
           dispatch(updateEditPostState(title, author, content));
         })
       .catch((err)=> {
@@ -321,4 +319,46 @@ export const updatePostContent = (newContent) => {
     type: ActionTypes.UPDATE_POST_CONTENT,
     newContent: newContent
   };
+};
+
+export const fetchMyPosts = (userId) => {
+  return dispatch => {
+      dispatch(fetchMyPostsLoading());
+      //const userId="QutXyzqcOgfIVfCnL0zxSEnPDjl1";
+      const queryParams ='?orderBy="userId"&equalTo="' + userId + '"';
+      axios.get('/posts.json'+ queryParams)
+      .then(res =>{
+          const fetchedOrders=[];
+          for(let key in res.data ){
+            fetchedOrders.push({
+              ...res.data[key],
+              id:key
+            }); 
+          }
+          dispatch(fetchMyPostsSuccess(fetchedOrders));
+      }) 
+      .catch(err => {
+        dispatch(fetchMyPostsFail(err));
+      });
+  };
+};
+
+export const fetchMyPostsSuccess = ( myPosts ) => {
+    return {
+        type: ActionTypes.FETCH_MY_POSTS_SUCCESS,
+        myPosts: myPosts
+    };
+};
+
+export const fetchMyPostsFail = ( error ) => {
+    return {
+        type: ActionTypes.FETCH_MY_POSTS_FAIL,
+        error: error
+    };
+};
+
+export const fetchMyPostsLoading = () => {
+    return {
+        type: ActionTypes.FETCH_MY_POSTS_LOADING
+    };
 };

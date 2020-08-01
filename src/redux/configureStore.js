@@ -4,6 +4,7 @@ import {Comments} from './comments';
 import {NewPost} from './newPost';
 import Auth from './auth';
 import EditPost from './editPost';
+import MyPosts from './myPosts';
 
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -17,7 +18,8 @@ export const ConfigureStore = () => {
         	comments: Comments,
         	newPost: NewPost,
         	auth: Auth,
-            editPost: EditPost
+            editPost: EditPost,
+            myPosts: MyPosts
         }),
        composeEnhancers(applyMiddleware(thunk,logger))
     );

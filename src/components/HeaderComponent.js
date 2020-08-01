@@ -1,6 +1,6 @@
 import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
-import { NavLink, Redirect, withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
 
@@ -124,7 +124,7 @@ class Header extends Component {
                                 <NavLink className="nav-link"  to='/new'><span className="fa fa-pencil fa-lg"></span> NewPost </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
+                                <NavLink className="nav-link" to='/home/myPosts'><span className="fa fa-address-card fa-lg"></span> My Posts</NavLink>
                             </NavItem>
                             </Nav>
                             <Nav className="ml-auto" navbar>

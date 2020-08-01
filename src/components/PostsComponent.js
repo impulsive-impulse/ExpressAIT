@@ -62,8 +62,8 @@ function Posts(props) {
 			<div className="row row-content">
 				<div className="col-md-10">
 					<PostList posts={props.posts}
-							isLoading={props.isLoading} 
-							errMess={props.ErrMess}/>
+						isLoading={props.isLoading} 
+						errMess={props.ErrMess}/>
 				</div>
 			</div>
 		</div>

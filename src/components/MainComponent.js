@@ -7,6 +7,7 @@ import FullPost from './FullPostComponent';
 import { addComment, fetchPosts , fetchComments, authCheckState} from '../redux/ActionCreators';
 import NewPost from './NewPost'; 
 import EditPost from './EditPost';
+import MyPosts from './MyPosts';
 
 const mapStateToProps = state => {
   return {
@@ -56,6 +57,7 @@ class Main extends Component {
 				<Header/>
 				<Switch>
 				<Route exact path="/" component={Home}/>
+				<Route path="/home/myPosts" component={MyPosts}/>
 				<Route path="/home/:postId/edit" component={EditPost}/>
 				<Route path="/home/:postId" component={postWithId} />
 				<Route path="/new" component={NewPost} />
