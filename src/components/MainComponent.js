@@ -13,7 +13,9 @@ const mapStateToProps = state => {
   return {
     posts: state.posts,
     comments: state.comments,
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
+    currentUserName: state.auth.displayName,
+    currentUserId: state.auth.userId
   }
 }
 
@@ -43,6 +45,8 @@ class Main extends Component {
 					  comments={this.props.comments.comments.filter((comment) => comment.postId === match.params.postId)}
 					  postId={match.params.postId}
 					  isAuthenticated={this.props.isAuthenticated}
+					  currentUserName={this.props.currentUserName}
+					  currentUserId={this.props.currentUserId}
 					/>
 				);
 		}

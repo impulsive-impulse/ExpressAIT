@@ -28,9 +28,10 @@ class CommentForm extends Component {
         this.toggleModal();
         const data ={
         	postId :this.props.postId,
-        	author :values.author,
+        	author :this.props.currentUserName,
         	rating : values.rating,
-        	comment : values.comment
+        	comment : values.comment,
+            userId : this.props.currentUserId
         }
         
         this.props.addComment(data);
@@ -117,7 +118,11 @@ function FullPost (props){
 
         let commentForm = null;
         if(props.isAuthenticated)
-            commentForm = (<CommentForm addComment={props.addComment} postId={props.postId}/>);
+            commentForm = (<CommentForm addComment={props.addComment}
+                                        postId={props.postId}
+                                        currentUserId={props.currentUserId}
+                                        currentUserName={props.currentUserName}
+                        />);
 
 		return(
 				<>
