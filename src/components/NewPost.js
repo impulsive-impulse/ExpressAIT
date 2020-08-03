@@ -11,8 +11,9 @@ class NewPost extends Component {
   addPostHandler = (event) => {
     const data ={
       title: event.title,
-      author: event.author,
+      author: this.props.author,
       content: event.content,
+      userId: this.props.userId,
       image:''
     }
 
@@ -44,15 +45,6 @@ class NewPost extends Component {
                          />
                 </Col>
             </Row>
-            <Row className="form-group">
-                <Label htmlFor="author" md={2}><strong>Author</strong></Label>
-                <Col md={10}>
-                    <Control.text model=".author" id="author" name="author"
-                        placeholder="Author"
-                        className="form-control"
-                         />
-                </Col>
-            </Row>
           
             <Row className="form-group">
                 <Label htmlFor="content" md={2}><strong>Post Description</strong></Label>
@@ -78,7 +70,9 @@ class NewPost extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    newPost: state.newPost
+    newPost: state.newPost,
+    author: state.auth.displayName,
+    userId: state.auth.userId
   };
 };
 

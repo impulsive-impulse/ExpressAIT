@@ -115,6 +115,10 @@ function RenderComments (comments, postId){
 
 function FullPost (props){
 
+        let commentForm = null;
+        if(props.isAuthenticated)
+            commentForm = (<CommentForm addComment={props.addComment} postId={props.postId}/>);
+
 		return(
 				<>
 					<div className="container">
@@ -141,7 +145,7 @@ function FullPost (props){
 							<RenderComments comments={props.comments} postId={props.postId} />
 						</div>
 						<div className="row row-content">
-							<CommentForm addComment={props.addComment} postId={props.postId}/>
+							{commentForm}
 						</div>
 					</div>
 				</>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {fetchMyPosts, authCheckState} from '../redux/ActionCreators';
 import {Loading} from './LoadingComponent';
 import { Media } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 class MyPosts extends Component {
 
@@ -72,8 +72,13 @@ class MyPosts extends Component {
 	    } 
 	}
 
+	let redirectElement = null;
+    if (true) {
+      redirectElement = <Redirect to="/" />;
+    }
 
 		return(
+		<>
 			<div className = "container">
 				<div className="row row-content">
 					<div className="col-md-10">
@@ -83,6 +88,7 @@ class MyPosts extends Component {
 					</div>
 				</div>
 			</div>
+		</>
 		);
 	}
 } 
