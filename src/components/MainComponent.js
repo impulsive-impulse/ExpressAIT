@@ -4,7 +4,7 @@ import Blogs from './PostsComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import FullPost from './FullPostComponent';
-import { addComment, fetchPosts , fetchComments, authCheckState} from '../redux/ActionCreators';
+import { addComment, fetchPosts , fetchComments, authCheckState, deletePost} from '../redux/ActionCreators';
 import NewPost from './NewPost'; 
 import EditPost from './EditPost';
 import MyPosts from './MyPosts';
@@ -24,8 +24,8 @@ const mapDispatchToProps = dispatch => ({
 addComment: (data) => dispatch(addComment(data)),
 fetchPosts: () => {dispatch(fetchPosts())},
 fetchComments: () => dispatch(fetchComments()),
-autoSignup: () => dispatch(authCheckState())
-
+autoSignup: () => dispatch(authCheckState()),
+deletePost: (postId) => dispatch(deletePost(postId))
 });
 
 class Main extends Component {
@@ -47,6 +47,7 @@ class Main extends Component {
 					  isAuthenticated={this.props.isAuthenticated}
 					  currentUserName={this.props.currentUserName}
 					  currentUserId={this.props.currentUserId}
+					  deletePost ={ this.props.deletePost}
 					/>
 				);
 		}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem, Label,
     Modal, ModalHeader, ModalBody, Button, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 
 class CommentForm extends Component {
@@ -60,13 +60,6 @@ class CommentForm extends Component {
                     </Row>
                     <Row className="form-group">
                         <Col>
-                        <Label htmlFor="author">Author</Label>
-                        <Control.textarea model=".author" id="author"
-                                    rows="1" className="form-control" />
-                        </Col>
-                    </Row>
-                    <Row className="form-group">
-                        <Col>
                         <Label htmlFor="comment">Comment</Label>
                         <Control.textarea model=".comment" id="comment"
                                     rows="6" className="form-control" />
@@ -119,10 +112,24 @@ function FullPost (props){
         let commentForm = null;
         if(props.isAuthenticated)
             commentForm = (<CommentForm addComment={props.addComment}
-                                        postId={props.postId}
-                                        currentUserId={props.currentUserId}
-                                        currentUserName={props.currentUserName}
-                        />);
+                                postId={props.postId}
+                                currentUserId={props.currentUserId}
+                                currentUserName={props.currentUserName}
+                            />);
+
+        const history= useHistory();
+        const deletePostFun = () => {
+            props.deletePost(props.postId);
+            history.push("/");
+        }
+
+        let authFeature=null;
+        if(props.post.userId === props.currentUserId)
+            authFeature = (<>
+                            <Link to={"/home/"+props.postId+"/edit"}><Button color="warning"> EDIT </Button></Link>
+                            <Button onClick={deletePostFun} color="danger"> DELETE </Button>
+                        </>
+                    );
 
 		return(
 				<>
@@ -143,6 +150,9 @@ function FullPost (props){
 						<div className="row">
 							<h4>--{props.post.author}</h4>
 						</div>
+                        <div className="row">
+                            <h4>{authFeature}</h4>
+                        </div>
 						<div className="row">
 							<p>{props.post.content}</p>
 						</div>

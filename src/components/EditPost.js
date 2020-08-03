@@ -11,7 +11,7 @@ class EditPost extends Component{
 	}
 
 	editPostHandler = (event) => {
-		    this.props.updatePost(this.props.title, this.props.author, this.props.content, this.props.match.params.postId);
+		    this.props.updatePost(this.props.title, this.props.author, this.props.content, this.props.match.params.postId, this.props.userId);
 		};
 
 	onChangeHandlerTitle = (event) => {
@@ -35,16 +35,6 @@ class EditPost extends Component{
 		                        className="form-control"
 		                        value={this.props.title}
 		                        onChange={this.onChangeHandlerTitle}
-		                         />
-		                </Col>
-		            </Row>
-		            <Row className="form-group">
-		                <Label htmlFor="author" md={2}><strong>Author</strong></Label>
-		                <Col md={10}>
-		                    <Control.text model=".author" id="author" name="author"
-		                        placeholder="Author"
-		                        className="form-control"
-		                        value={this.props.author}
 		                         />
 		                </Col>
 		            </Row>
@@ -77,7 +67,8 @@ const mapStateToProps = (state) => {
 	return {
 		title: state.editPost.title,
 		author: state.editPost.author,
-		content: state.editPost.content
+		content: state.editPost.content,
+		userId: state.auth.userId
 	};
 };
 
@@ -85,7 +76,7 @@ const mapDispatchToProps = (dispatch) => {
 	return{
 		updateTitleHandler: (newTitle) => dispatch(updatePostTitle(newTitle)),
     	updateContentHandler: (newContent) => dispatch(updatePostContent(newContent)),
-		updatePost: (title, author, content, id) => dispatch(editPost(title, author, content, id)),
+		updatePost: (title, author, content, id, userId) => dispatch(editPost(title, author, content, id, userId)),
 		getData: (id) => dispatch(editPostGetData(id))
 	};
 };

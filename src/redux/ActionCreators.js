@@ -278,12 +278,13 @@ export const editPostGetDataFail = (err) => {
   }
 };
 
-export const editPost = (title, author, content, id) => {
+export const editPost = (title, author, content, id, userId) => {
     return dispatch => {
       const data= {
         title: title, 
         author : author,
         content: content,
+        userId: userId,
         image : null
       }
 
@@ -303,7 +304,7 @@ export const updateEditPostState = (title, author, content ) => {
     type: ActionTypes.UPDATE_EDIT_POST_STATE,
     title: title,
     author: author,
-    content: content
+    content: content,
   }
 }
 
@@ -361,4 +362,18 @@ export const fetchMyPostsLoading = () => {
     return {
         type: ActionTypes.FETCH_MY_POSTS_LOADING
     };
+};
+
+export const deletePost = (postId) => {
+  return (dispatch) => {
+    axios
+    .delete("/posts/"+ postId + ".json")
+    .then(res =>{
+        console.log(res);
+        console.log("DELETE SUCCESS");
+    })
+    .catch(err => {
+        console.log("Delete Error: ", err);
+    })
+  }
 };
